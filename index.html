@@ -122,8 +122,8 @@ html { scroll-padding-top: 80px; }
 .btn.ghost { color: var(--accent); }
 .btn:hover { filter: brightness(1.08); }
 figure { margin: 0; }
-.figure { border: 1px solid var(--rule); background: var(--surface); border-radius: 0; padding: 12px; }
-.figure canvas { display: block; width: 100%; aspect-ratio: 1 / 1; }
+.figure { border: 1px solid var(--rule); background: var(--surface); border-radius: 0; padding: 12px; overflow: hidden; }
+.figure svg { display: block; width: 100%; height: auto; }
 .figure figcaption { font-family: var(--mono); font-size: 12px; color: var(--muted); padding-top: 8px; }
 
 .facts {
@@ -251,8 +251,33 @@ footer .wrap { padding-top: 32px; padding-bottom: 48px; display: flex; flex-wrap
         </div>
       </div>
       <figure class="figure">
-        <canvas id="lattice" width="640" height="640" role="img" aria-label="A grid of points being stretched by a linear transformation, with two directions that keep their orientation highlighted"></canvas>
-        <figcaption>Fig. 1. A transformation stretches the plane. Two directions hold steady: its eigenvectors.</figcaption>
+        <svg viewBox="0 0 640 640" role="img" aria-label="Illustration of a student presenting a research chart on a screen to an audience">
+          <rect x="350" y="40" width="210" height="400" rx="14" transform="rotate(32 455 240)" fill="#ee8a0f"/>
+          <rect x="80" y="90" width="390" height="260" rx="6" fill="#ffffff"/>
+          <rect x="268" y="350" width="14" height="46" fill="#cdd2db"/>
+          <rect x="200" y="394" width="150" height="10" rx="5" fill="#cdd2db"/>
+          <rect x="118" y="116" width="170" height="11" rx="3" fill="#151a23"/>
+          <rect x="118" y="136" width="104" height="7" rx="3" fill="#9aa1ad"/>
+          <rect x="118" y="308" width="314" height="3" fill="#151a23"/>
+          <rect x="132" y="262" width="44" height="46" fill="#cdd2db"/>
+          <rect x="196" y="232" width="44" height="76" fill="#cdd2db"/>
+          <rect x="260" y="200" width="44" height="108" fill="#cdd2db"/>
+          <rect x="324" y="172" width="44" height="136" fill="#ee8a0f"/>
+          <polyline points="154,244 218,214 282,182 346,152 410,128" fill="none" stroke="#151a23" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="154" cy="244" r="6" fill="#151a23"/><circle cx="218" cy="214" r="6" fill="#151a23"/><circle cx="282" cy="182" r="6" fill="#151a23"/><circle cx="346" cy="152" r="6" fill="#151a23"/><circle cx="410" cy="128" r="6" fill="#151a23"/>
+          <line x1="506" y1="352" x2="452" y2="296" stroke="#ffffff" stroke-width="16" stroke-linecap="round"/>
+          <circle cx="528" cy="286" r="28" fill="#ffffff"/>
+          <rect x="492" y="324" width="74" height="130" rx="30" fill="#ffffff"/>
+          <rect x="470" y="410" width="118" height="16" rx="3" fill="#59627a"/>
+          <rect x="482" y="426" width="94" height="96" fill="#454d61"/>
+          <g fill="#3b4354">
+            <circle cx="100" cy="548" r="30"/><ellipse cx="100" cy="640" rx="58" ry="62"/>
+            <circle cx="244" cy="548" r="30"/><ellipse cx="244" cy="640" rx="58" ry="62"/>
+            <circle cx="388" cy="548" r="30"/><ellipse cx="388" cy="640" rx="58" ry="62"/>
+            <circle cx="532" cy="548" r="30"/><ellipse cx="532" cy="640" rx="58" ry="62"/>
+          </g>
+        </svg>
+        <figcaption>Students present their research to a panel of judges.</figcaption>
       </figure>
     </div>
   </div>
@@ -519,52 +544,6 @@ footer .wrap { padding-top: 32px; padding-bottom: 48px; display: flex; flex-wrap
   }
   window.addEventListener('hashchange', show);
   show();
-})();
-
-(function () {
-  var c = document.getElementById('lattice');
-  if (!c || !c.getContext) return;
-  var ctx = c.getContext('2d');
-  var still = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  function tok(n) { return getComputedStyle(c).getPropertyValue(n).trim(); }
-
-  function draw(t) {
-    var W = c.width, H = c.height, cx = W / 2, cy = H / 2, u = 44;
-    // Symmetric matrix [[a, b], [b, a]] has eigenvectors along (1,1) and (1,-1).
-    var k = 0.5 + 0.5 * Math.sin(t);
-    var a = 1 + 0.25 * k, b = 0.45 * k;
-    var rule = tok('--rule'), ink = tok('--muted'), accent = tok('--accent'), second = tok('--ink');
-    function P(x, y) { return [cx + (a * x + b * y) * u, cy - (b * x + a * y) * u]; }
-
-    ctx.clearRect(0, 0, W, H);
-    ctx.lineWidth = 1.5; ctx.strokeStyle = rule;
-    for (var i = -6; i <= 6; i++) {
-      var p = P(i, -6), q = P(i, 6), r = P(-6, i), s = P(6, i);
-      ctx.beginPath(); ctx.moveTo(p[0], p[1]); ctx.lineTo(q[0], q[1]);
-      ctx.moveTo(r[0], r[1]); ctx.lineTo(s[0], s[1]); ctx.stroke();
-    }
-    ctx.fillStyle = ink;
-    for (var x = -6; x <= 6; x++) for (var y = -6; y <= 6; y++) {
-      var d = P(x, y);
-      ctx.beginPath(); ctx.arc(d[0], d[1], 2.6, 0, 6.2832); ctx.fill();
-    }
-    function axis(dx, dy, col) {
-      var p = P(-6 * dx, -6 * dy), q = P(6 * dx, 6 * dy);
-      ctx.strokeStyle = col; ctx.lineWidth = 5; ctx.lineCap = 'round';
-      ctx.beginPath(); ctx.moveTo(p[0], p[1]); ctx.lineTo(q[0], q[1]); ctx.stroke();
-    }
-    axis(0.6, 0.6, accent);
-    axis(0.6, -0.6, second);
-  }
-
-  var start = null;
-  function frame(ts) {
-    if (start === null) start = ts;
-    draw(1.2 + (ts - start) / 2600);
-    requestAnimationFrame(frame);
-  }
-  draw(1.2);
-  if (!still) requestAnimationFrame(frame);
 })();
 </script>
 </body>
