@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Submit your abstract | Eigen Sciences Research Conference</title>
+<meta name="description" content="Submit an abstract to the Eigen Sciences Research Conference and pay the $55 registration fee.">
+<link rel="canonical" href="https://conference.eigensciences.com/submit-abstract">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Manrope:wght@500;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="site band">
+  <div class="wrap">
+    <a class="brand" href="./">Eigen Sciences Research Conference</a>
+    <nav aria-label="Sections">
+      <a href="./">Home</a>
+      <a href="call-for-abstracts">Call for abstracts</a>
+      <a href="important-dates">Dates</a>
+      <a href="registration">Registration</a>
+      <a href="submit-abstract" aria-current="page">Submit abstract</a>
+      <a href="program">Program</a>
+      <a href="awards">Awards</a>
+      <a href="committee">Committee</a>
+      <a href="policies">Policies</a>
+      <a href="questions">Questions</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+  <section class="block" id="submit">
+    <div class="wrap">
+      <span class="label">Submit abstract</span>
+      <div class="content">
+        <h2>Submit your abstract</h2>
+        <p>Complete the form, then click the button at the bottom. Your abstract is sent to the review committee and you are taken to the secure Stripe page to pay the $55 registration fee. Deadline: December 15, 2026.</p>
+        <div class="notice"><p><strong>Your submission is complete only when the fee is paid.</strong> One form and one payment per abstract. Requesting a fee waiver? Do not use this form yet; email <a href="mailto:research@eigensciences.com">research@eigensciences.com</a> first.</p></div>
+
+        <form class="sub-form" id="abstract-form" action="https://formsubmit.co/research@eigensciences.com" method="POST">
+          <input type="hidden" name="_subject" value="New abstract submission: Eigen Sciences Research Conference">
+          <input type="hidden" name="_next" value="https://buy.stripe.com/cNiaEW730eIfejw6BRbwk00">
+          <input type="hidden" name="_template" value="table">
+          <input type="text" name="_honey" class="is-hidden" tabindex="-1" autocomplete="off" aria-hidden="true">
+
+          <fieldset><legend>Project</legend>
+            <div class="row two">
+              <label for="f-division">Division<select id="f-division" name="Division" required><option value="">Choose one</option><option>Middle school</option><option>High school</option></select></label>
+              <label for="f-track">Research track<select id="f-track" name="Track" required><option value="">Choose one</option><option>Life sciences</option><option>Medicine and health</option><option>Physical sciences</option><option>Mathematics and computing</option><option>Engineering</option><option>Social sciences</option></select></label>
+            </div>
+            <label for="f-title">Abstract title <small>Up to 20 words, no abbreviations</small><input id="f-title" name="Title" type="text" required maxlength="250"></label>
+            <label for="f-abstract">Abstract <small>Up to 250 words: background and question, methods, results, conclusion</small><textarea id="f-abstract" name="Abstract" rows="10" required></textarea></label>
+            <p class="count" id="f-count" aria-live="polite">0 of 250 words</p>
+            <label for="f-keywords">Keywords <small>Three to five, separated by commas</small><input id="f-keywords" name="Keywords" type="text" required></label>
+          </fieldset>
+
+          <fieldset><legend>Authors</legend>
+            <p class="hint">Up to 4 students. Give each author's full name, school, city and country.</p>
+            <label for="f-a1">Author 1 (presenting author)<input id="f-a1" name="Author 1" type="text" required placeholder="Full name, school, city, country"></label>
+            <label for="f-a2">Author 2 <small>Optional</small><input id="f-a2" name="Author 2" type="text" placeholder="Full name, school, city, country"></label>
+            <label for="f-a3">Author 3 <small>Optional</small><input id="f-a3" name="Author 3" type="text" placeholder="Full name, school, city, country"></label>
+            <label for="f-a4">Author 4 <small>Optional</small><input id="f-a4" name="Author 4" type="text" placeholder="Full name, school, city, country"></label>
+          </fieldset>
+
+          <fieldset><legend>Contact</legend>
+            <div class="row two">
+              <label for="f-email">Contact email <small>Decisions are sent here</small><input id="f-email" name="email" type="email" required></label>
+              <label for="f-payer">Name of the person paying <small>So we can match your payment</small><input id="f-payer" name="Payer name" type="text" required></label>
+            </div>
+            <div class="row two">
+              <label for="f-guardian">Parent or guardian name<input id="f-guardian" name="Parent or guardian name" type="text" required></label>
+              <label for="f-gemail">Parent or guardian email<input id="f-gemail" name="Parent or guardian email" type="email" required></label>
+            </div>
+            <label for="f-mentor">Mentor name and institution <small>Recommended, not required</small><input id="f-mentor" name="Mentor" type="text"></label>
+          </fieldset>
+
+          <fieldset><legend>Declarations</legend>
+            <label for="f-ai">AI tools used, and what for <small>Write "None" if you did not use any</small><input id="f-ai" name="AI tools used" type="text" required></label>
+            <label class="check" for="f-own"><input id="f-own" name="Original work confirmed" type="checkbox" value="Yes" required> This research is our own work, and we have read the conference policies.</label>
+            <label class="check" for="f-consent"><input id="f-consent" name="Guardian consent confirmed" type="checkbox" value="Yes" required> A parent or guardian of each author under 18 agrees to this submission.</label>
+            <label class="check" for="f-fee"><input id="f-fee" name="Non-refundable fee understood" type="checkbox" value="Yes" required> We understand the $55 fee is non-refundable.</label>
+          </fieldset>
+
+          <p class="form-error is-hidden" id="f-error" role="alert"></p>
+          <button class="btn primary" type="submit">Submit abstract and continue to payment ($55)</button>
+          <p class="hint">After you click, you may be asked to confirm you are not a robot. You are then taken to Stripe to pay. If the payment page does not open, use the payment link on the Registration page.</p>
+        </form>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>Eigen Sciences Research Conference</span>
+    <span>An international research conference for middle and high school students</span>
+  </div>
+</footer>
+<script>
+// Abstract form: live word count and a 250-word limit.
+(function () {
+  var form = document.getElementById('abstract-form'); if (!form) return;
+  var ta = document.getElementById('f-abstract'), out = document.getElementById('f-count'), err = document.getElementById('f-error');
+  function words() { var t = ta.value.trim(); return t ? t.split(/\s+/).length : 0; }
+  function update() { var n = words(); out.textContent = n + ' of 250 words'; out.classList.toggle('over', n > 250); }
+  ta.addEventListener('input', update); update();
+  form.addEventListener('submit', function (e) {
+    if (words() > 250) { e.preventDefault(); err.textContent = 'Your abstract is ' + words() + ' words. Shorten it to 250 words or fewer, then submit again.'; err.classList.remove('is-hidden'); ta.focus(); }
+  });
+})();
+</script>
+</body>
+</html>

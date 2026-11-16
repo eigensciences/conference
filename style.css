@@ -207,3 +207,21 @@ footer .wrap { padding-top: 32px; padding-bottom: 48px; display: flex; flex-wrap
   .facts > div { border-top: 1px solid var(--rule); border-left: 0; }
   .facts > div:first-child { border-top: 0; }
 }
+
+/* Submission form */
+.sub-form { display: flex; flex-direction: column; gap: 24px; max-width: 760px; }
+.sub-form fieldset { border: 1px solid var(--rule); background: var(--surface); padding: 22px; margin: 0; display: flex; flex-direction: column; gap: 16px; min-width: 0; }
+.sub-form legend { font-family: var(--display); font-weight: 800; font-size: 20px; padding: 0 8px; }
+.sub-form label { display: flex; flex-direction: column; gap: 6px; font-weight: 600; font-size: 15px; }
+.sub-form label small { font-weight: 400; color: var(--muted); font-size: 14px; }
+.sub-form input[type="text"], .sub-form input[type="email"], .sub-form select, .sub-form textarea { font: inherit; font-weight: 400; color: var(--ink); background: #fff; border: 1px solid #9aa1ad; border-radius: 0; padding: 10px 12px; width: 100%; }
+.sub-form input:focus-visible, .sub-form select:focus-visible, .sub-form textarea:focus-visible { outline: 3px solid var(--accent); outline-offset: 1px; }
+.sub-form textarea { resize: vertical; line-height: 1.5; }
+.sub-form .row.two { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.sub-form label.check { flex-direction: row; align-items: flex-start; gap: 10px; font-weight: 400; }
+.sub-form label.check input { margin-top: 5px; width: 18px; height: 18px; flex: none; accent-color: var(--accent-deep); }
+.sub-form .hint, .sub-form .count { color: var(--muted); font-size: 14px; margin: 0; }
+.sub-form .count { margin-top: -8px; font-variant-numeric: tabular-nums; }
+.sub-form .count.over, .form-error { color: #a4161a; font-weight: 600; }
+.sub-form button.btn { cursor: pointer; font-family: var(--body); align-self: flex-start; }
+@media (max-width: 520px) { .sub-form .row.two { grid-template-columns: minmax(0, 1fr); } }
