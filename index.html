@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Eigen Sciences Research Conference</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&display=swap" rel="stylesheet">
+<style>
+/* Layout idea: an academic call for abstracts. Pale green masthead, near-white ruled sections with mono labels in a narrow margin column, gold for actions, amber marker for anything still to be decided. */
+:root {
+  --paper: #ffffff;
+  --surface: #ffffff;
+  --ink: #17211d;
+  --muted: #55625c;
+  --rule: #d5dad6;
+  --accent: #17795e;
+  --accent-ink: #ffffff;
+  --marker: #f3c64a;
+  --marker-ink: #2b2200;
+  --display: "Source Serif 4", Georgia, "Times New Roman", serif;
+  --body: "IBM Plex Sans", "Segoe UI", Helvetica, Arial, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+}
+/* Single light theme by choice: the page stays light on every device. */
+:root { color-scheme: light; }
+/* Evergreen masthead for the header and hero, in both themes */
+.band {
+  --paper: #eef6f2;
+  --surface: #ffffff;
+  --rule: #cfe1d8;
+  background: var(--paper);
+  color: var(--ink);
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--body);
+  font-size: 17px;
+  line-height: 1.6;
+}
+a { color: var(--accent); }
+a:focus-visible, button:focus-visible, summary:focus-visible {
+  outline: 3px solid var(--marker);
+  outline-offset: 3px;
+}
+h1, h2, h3 { font-family: var(--display); line-height: 1.12; text-wrap: balance; margin: 0; }
+p { margin: 0; max-width: 65ch; }
+.wrap { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
+.label {
+  font-family: var(--mono);
+  font-size: 13px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.tba {
+  display: inline-block;
+  background: var(--marker);
+  color: var(--marker-ink);
+  font-family: var(--mono);
+  font-size: 13px;
+  font-weight: 400;
+  padding: 2px 8px;
+  border-radius: 3px;
+}
+
+/* Header */
+header.site { border-bottom: 1px solid var(--rule); position: sticky; top: 0; z-index: 5; }
+header.site .wrap {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 24px;
+  padding-top: 14px;
+  padding-bottom: 14px;
+}
+.brand { font-family: var(--display); font-weight: 700; font-size: 20px; color: var(--ink); text-decoration: none; }
+nav { display: flex; flex-wrap: wrap; gap: 4px 18px; }
+nav a { color: var(--ink); text-decoration: none; font-size: 15px; font-weight: 500; }
+nav a:hover { color: var(--accent); text-decoration: underline; }
+nav a[aria-current="page"] { color: var(--accent); text-decoration: underline; text-underline-offset: 5px; text-decoration-thickness: 2px; }
+.is-hidden { display: none !important; }
+html { scroll-padding-top: 80px; }
+
+/* Hero */
+.hero .wrap {
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+  gap: 40px;
+  align-items: center;
+  padding-top: 56px;
+  padding-bottom: 56px;
+}
+.hero h1 { font-size: clamp(38px, 5.6vw, 66px); font-weight: 700; letter-spacing: -0.01em; margin: 14px 0 20px; }
+.hero h1 em { font-style: normal; color: var(--accent); }
+.hero .lede { font-size: 20px; color: var(--muted); max-width: 54ch; }
+.cta { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
+.btn {
+  display: inline-block;
+  padding: 12px 20px;
+  border-radius: 4px;
+  font-weight: 600;
+  text-decoration: none;
+  border: 2px solid var(--accent);
+}
+.btn.primary { background: var(--accent); color: var(--accent-ink); }
+.btn.ghost { color: var(--accent); }
+.btn:hover { filter: brightness(1.08); }
+figure { margin: 0; }
+.figure { border: 1px solid var(--rule); background: var(--surface); border-radius: 6px; padding: 12px; }
+.figure canvas { display: block; width: 100%; aspect-ratio: 1 / 1; }
+.figure figcaption { font-family: var(--mono); font-size: 12px; color: var(--muted); padding-top: 8px; }
+
+.facts {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  border-bottom: 1px solid var(--rule);
+}
+.facts > div { padding: 20px 24px; border-left: 1px solid var(--rule); display: flex; flex-direction: column; gap: 6px; }
+.facts > div:first-child { border-left: 0; padding-left: 0; }
+.facts strong { font-family: var(--display); font-size: 20px; font-weight: 700; }
+
+/* Sections */
+section.block { border-bottom: 1px solid var(--rule); }
+section.block .wrap {
+  display: grid;
+  grid-template-columns: 200px minmax(0, 1fr);
+  gap: 32px;
+  padding-top: 60px;
+  padding-bottom: 60px;
+}
+.content { display: flex; flex-direction: column; gap: 22px; }
+.content h2 { font-size: clamp(28px, 3.4vw, 40px); font-weight: 700; }
+.content h3.sub { font-size: 23px; font-weight: 700; margin-top: 10px; }
+
+.grid { display: grid; gap: 16px; }
+.grid.two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.grid.three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.card {
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.card h3 { font-size: 20px; font-weight: 700; }
+.card p { color: var(--muted); font-size: 16px; }
+ul.plain { margin: 0; padding-left: 20px; color: var(--muted); font-size: 16px; display: flex; flex-direction: column; gap: 6px; max-width: 65ch; }
+
+.fee { background: var(--surface); border: 1px solid var(--rule); border-top: 4px solid var(--accent); border-radius: 6px; padding: 24px; display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 8px 32px; align-items: center; }
+.fee .price { font-family: var(--display); font-size: 60px; font-weight: 700; line-height: 1; font-variant-numeric: tabular-nums; }
+.fee .price small { font-family: var(--mono); font-size: 14px; font-weight: 400; color: var(--muted); }
+.fee p { color: var(--muted); }
+
+ol.steps { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
+ol.steps li {
+  display: grid;
+  grid-template-columns: 64px minmax(0, 1fr);
+  gap: 16px;
+  padding: 18px 0;
+  border-top: 1px solid var(--rule);
+}
+ol.steps li:last-child { border-bottom: 1px solid var(--rule); }
+ol.steps .n { font-family: var(--mono); font-size: 15px; color: var(--accent); padding-top: 3px; }
+ol.steps h3 { font-size: 20px; font-weight: 700; margin-bottom: 4px; }
+ol.steps p { color: var(--muted); font-size: 16px; }
+
+.tablewrap { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; min-width: 460px; font-size: 16px; }
+th, td { text-align: left; padding: 12px 14px; border-bottom: 1px solid var(--rule); vertical-align: top; }
+th:first-child, td:first-child { padding-left: 0; }
+th { font-family: var(--mono); font-size: 13px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); font-weight: 500; }
+td.num { font-family: var(--mono); font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+details { border-top: 1px solid var(--rule); padding: 14px 0; }
+details:last-of-type { border-bottom: 1px solid var(--rule); }
+summary { cursor: pointer; font-weight: 600; font-size: 18px; }
+details p { color: var(--muted); padding-top: 8px; }
+
+.notice { background: var(--surface); border: 1px solid var(--rule); border-left: 4px solid var(--marker); border-radius: 6px; padding: 22px; display: flex; flex-direction: column; gap: 10px; }
+
+footer .wrap { padding-top: 32px; padding-bottom: 48px; display: flex; flex-wrap: wrap; gap: 8px 32px; justify-content: space-between; color: var(--muted); font-size: 15px; }
+
+@media (max-width: 860px) {
+  .hero .wrap { grid-template-columns: minmax(0, 1fr); padding-top: 40px; padding-bottom: 40px; }
+  .figure { max-width: 400px; }
+  .facts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .facts > div { padding-left: 0; border-left: 0; }
+  .facts > div:nth-child(n+3) { border-top: 1px solid var(--rule); }
+  section.block .wrap { grid-template-columns: minmax(0, 1fr); gap: 12px; padding-top: 44px; padding-bottom: 44px; }
+  .grid.three { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 520px) {
+  .wrap { padding: 0 16px; }
+  .grid.two, .grid.three, .facts, .fee { grid-template-columns: minmax(0, 1fr); }
+  .facts > div { border-top: 1px solid var(--rule); padding: 14px 0; }
+  .facts > div:first-child { border-top: 0; }
+}
+</style>
+</head>
+<body>
+
+<header class="site band">
+  <div class="wrap">
+    <a class="brand" href="#top">Eigen Sciences Research Conference</a>
+    <nav aria-label="Sections">
+      <a href="#about">Home</a>
+      <a href="#call">Call for abstracts</a>
+      <a href="#dates">Dates</a>
+      <a href="#registration">Registration</a>
+      <a href="#program">Program</a>
+      <a href="#awards">Awards</a>
+      <a href="#committee">Committee</a>
+      <a href="#policies">Policies</a>
+      <a href="#questions">Questions</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+  <div class="hero band" id="hero">
+    <div class="wrap">
+      <div>
+        <span class="label">International research conference and competition for middle and high school students</span>
+        <h1>Call for abstracts: present your research to <em>the world.</em></h1>
+        <p class="lede">The Eigen Sciences Research Conference invites middle school and high school researchers from every country to submit an abstract, present original work to a panel of judges, and compete for recognition.</p>
+        <div class="cta">
+          <a class="btn primary" href="#call">Read the call for abstracts</a>
+          <a class="btn ghost" href="#registration">Registration and fee</a>
+        </div>
+      </div>
+      <figure class="figure">
+        <canvas id="lattice" width="640" height="640" role="img" aria-label="A grid of points being stretched by a linear transformation, with two directions that keep their orientation highlighted"></canvas>
+        <figcaption>Fig. 1. A transformation stretches the plane. Two directions hold steady: its eigenvectors.</figcaption>
+      </figure>
+    </div>
+  </div>
+
+  <div class="wrap" id="facts">
+    <div class="facts">
+      <div><span class="label">Who</span><strong>Middle and high school students, any country</strong></div>
+      <div><span class="label">To enter</span><strong>Abstract required</strong></div>
+      <div><span class="label">Registration fee</span><strong>$55 USD per abstract</strong></div>
+      <div><span class="label">Abstract deadline</span><strong>December 15, 2026</strong></div>
+    </div>
+  </div>
+
+  <section class="block" id="about">
+    <div class="wrap">
+      <span class="label">01 About</span>
+      <div class="content">
+        <h2>A research conference built for school students</h2>
+        <p>Most research conferences are designed for people who already hold a degree. This one is for middle school and high school students doing their first serious projects who want an audience that takes the work seriously.</p>
+        <p>Every participant submits an abstract, presents to a panel of judges, answers questions, and receives written feedback. The strongest projects in each track and division earn awards.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="call">
+    <div class="wrap">
+      <span class="label">02 Call for abstracts</span>
+      <div class="content">
+        <h2>Call for abstracts</h2>
+        <p>An abstract is required from every project. It is the basis for acceptance and for placing your project in a judging session.</p>
+
+        <h3 class="sub">Who can submit</h3>
+        <p>Students from any country and any curriculum can submit. There are two divisions, judged separately.</p>
+        <div class="grid two">
+          <div class="card" style="border-top:4px solid var(--accent)"><span class="label">Division 1</span><h3>Middle school</h3><p>Students enrolled in middle school at the time of submission.</p></div>
+          <div class="card" style="border-top:4px solid var(--accent)"><span class="label">Division 2</span><h3>High school</h3><p>Students enrolled in high school (secondary school) at the time of submission.</p></div>
+        </div>
+        <ul class="plain">
+          <li>Individual and team projects are both welcome. A team submits one abstract, with up to 4 students.</li>
+          <li>School projects, independent research, and work done with a mentor or in a summer program all qualify.</li>
+          <li>Naming a mentor is recommended but not required.</li>
+        </ul>
+
+        <h3 class="sub">Research tracks</h3>
+        <div class="grid three">
+          <div class="card"><h3>Life sciences</h3><p>Biology, biochemistry, genetics, neuroscience, ecology.</p></div>
+          <div class="card"><h3>Medicine and health</h3><p>Biomedical research, public health, epidemiology.</p></div>
+          <div class="card"><h3>Physical sciences</h3><p>Physics, chemistry, astronomy, materials, earth science.</p></div>
+          <div class="card"><h3>Mathematics and computing</h3><p>Pure and applied mathematics, statistics, computer science, AI.</p></div>
+          <div class="card"><h3>Engineering</h3><p>Robotics, energy, electronics, design and prototypes.</p></div>
+          <div class="card"><h3>Social sciences</h3><p>Psychology, economics, education, behavioral research.</p></div>
+        </div>
+
+        <h3 class="sub">Abstract guidelines</h3>
+        <div class="tablewrap">
+          <table>
+            <thead><tr><th>Item</th><th>Requirement</th></tr></thead>
+            <tbody>
+              <tr><td>Length</td><td>Up to 250 words, in English</td></tr>
+              <tr><td>Structure</td><td>Background and question, methods, results, conclusion</td></tr>
+              <tr><td>Title</td><td>Up to 20 words, no abbreviations</td></tr>
+              <tr><td>Division</td><td>Middle school or high school</td></tr>
+              <tr><td>Authors</td><td>Up to 4 students per abstract. Full name, school, city and country for each</td></tr>
+              <tr><td>Mentor</td><td>Recommended. Name and institution of the mentor or teacher who advised the work</td></tr>
+              <tr><td>Track</td><td>One of the six tracks above</td></tr>
+              <tr><td>Keywords</td><td>Three to five</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p><span class="tba">Abstract template to be added</span></p>
+
+        <h3 class="sub">From abstract to award</h3>
+        <ol class="steps">
+          <li><span class="n">Step 1</span><div><h3>Submit your abstract and pay the fee</h3><p>Send your abstract with the $55 registration fee by December 15, 2026.</p></div></li>
+          <li><span class="n">Step 2</span><div><h3>Review</h3><p>The review committee reads every abstract and sends an acceptance decision.</p></div></li>
+          <li><span class="n">Step 3</span><div><h3>Present</h3><p>Accepted students give a 10 minute talk to a panel of judges, followed by 5 minutes of questions.</p></div></li>
+          <li><span class="n">Step 4</span><div><h3>Feedback and awards</h3><p>Every presenter receives written comments. Top projects in each track and division are recognized at the closing ceremony.</p></div></li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="dates">
+    <div class="wrap">
+      <span class="label">03 Important dates</span>
+      <div class="content">
+        <h2>Important dates</h2>
+        <div class="tablewrap">
+          <table>
+            <thead><tr><th>Milestone</th><th>Date</th></tr></thead>
+            <tbody>
+              <tr><td>Abstract submissions open</td><td><span class="tba">To be announced</span></td></tr>
+              <tr><td>Abstract and fee deadline</td><td><strong>December 15, 2026</strong></td></tr>
+              <tr><td>Acceptance notices sent</td><td><span class="tba">To be announced</span></td></tr>
+              <tr><td>Final slides or poster due</td><td><span class="tba">To be announced</span></td></tr>
+              <tr><td>Conference and presentations</td><td><span class="tba">To be announced</span></td></tr>
+              <tr><td>Awards ceremony</td><td><span class="tba">To be announced</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="registration">
+    <div class="wrap">
+      <span class="label">04 Registration</span>
+      <div class="content">
+        <h2>Registration and fee</h2>
+        <div class="fee">
+          <div class="price">$55 <small>USD</small></div>
+          <div>
+            <p><strong style="color:var(--ink)">Registration fee per abstract, paid when you submit.</strong></p>
+            <p>One fee covers the whole team, up to 4 students. It includes abstract review, your presentation slot, and written feedback from the judges. There are no additional costs after this.</p>
+          </div>
+        </div>
+        <ul class="plain">
+          <li>The fee is charged per abstract, not per student.</li>
+          <li>Payment is by card through Stripe, a secure online payment service.</li>
+          <li>The fee is non-refundable, including when an abstract is not accepted.</li>
+          <li>Fee waivers are available for students from low-income and lower-middle-income countries. <span class="tba">Eligible country list to be added</span></li>
+        </ul>
+        <div class="notice">
+          <span class="tba">Submission form and Stripe payment link to be added</span>
+          <p>To submit, you will need: your name, school, country, track, project title, abstract, mentor details if any, and a parent or guardian contact.</p>
+          <p>Contact: <span class="tba">Email address to be added</span></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="program">
+    <div class="wrap">
+      <span class="label">05 Program</span>
+      <div class="content">
+        <h2>Program</h2>
+        <div class="grid two">
+          <div class="card"><h3>Schedule</h3><p>Opening session, judged presentation sessions by track, and the awards ceremony.</p><p><span class="tba">Full schedule to be announced</span></p></div>
+          <div class="card"><h3>Keynote speakers</h3><p>Invited scientists speaking about their research and their path into it.</p><p><span class="tba">Speakers to be announced</span></p></div>
+          <div class="card"><h3>Venue and format</h3><p>Location, travel information, or the online platform and time zones.</p><p><span class="tba">In person or online: to be announced</span></p></div>
+          <div class="card"><h3>Abstract book</h3><p>Accepted abstracts published together after the conference.</p><p><span class="tba">To be confirmed</span></p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="awards">
+    <div class="wrap">
+      <span class="label">06 Awards</span>
+      <div class="content">
+        <h2>Judging and awards</h2>
+        <p>First, second and third place are awarded in each track for each division, with one overall best project per division. Every presenter receives a certificate of participation.</p>
+        <p><span class="tba">Prizes to be announced</span></p>
+        <div class="tablewrap">
+          <table>
+            <thead><tr><th>Criterion</th><th>What judges look for</th><th>Weight</th></tr></thead>
+            <tbody>
+              <tr><td>Research question</td><td>Is it clear, specific and worth asking?</td><td class="num">20%</td></tr>
+              <tr><td>Method</td><td>Does the approach fit the question, and is it carried out carefully?</td><td class="num">30%</td></tr>
+              <tr><td>Results and reasoning</td><td>Do the conclusions follow from the evidence? Are limits acknowledged?</td><td class="num">25%</td></tr>
+              <tr><td>Presentation</td><td>Is the work explained clearly, in slides and in answers to questions?</td><td class="num">15%</td></tr>
+              <tr><td>Originality</td><td>Does the student bring their own idea or angle?</td><td class="num">10%</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p><span class="tba">Draft rubric</span> These weights are a starting suggestion and can be changed.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="committee">
+    <div class="wrap">
+      <span class="label">07 Committee</span>
+      <div class="content">
+        <h2>Organizing committee</h2>
+        <p>The people responsible for the conference, with their institutions.</p>
+        <div class="grid three">
+          <div class="card"><span class="label">Conference chair</span><p><span class="tba">To be announced</span></p></div>
+          <div class="card"><span class="label">Review committee</span><p><span class="tba">To be announced</span></p></div>
+          <div class="card"><span class="label">Judges</span><p><span class="tba">To be announced</span></p></div>
+        </div>
+        <h3 class="sub">Sponsors and partners</h3>
+        <p><span class="tba">To be announced</span></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="policies">
+    <div class="wrap">
+      <span class="label">08 Policies</span>
+      <div class="content">
+        <h2>Policies</h2>
+        <div class="grid two">
+          <div class="card"><h3>Original work</h3><p>The research must be the student's own. Copied text or results lead to rejection. Abstracts may be checked for plagiarism.</p></div>
+          <div class="card"><h3>Credit for help</h3><p>Name every mentor, teacher or lab that supported the project, and say which parts the student did.</p></div>
+          <div class="card"><h3>Presenting</h3><p>At least one student author of each accepted abstract must present to be eligible for awards and a certificate.</p></div>
+          <div class="card"><h3>Research ethics</h3><p>Projects involving people or animals must have followed the approval rules of the student's school or institution.</p></div>
+          <div class="card"><h3>Parent or guardian consent</h3><p>Participants under 18 need consent from a parent or guardian to register and to appear in photos or recordings.</p></div>
+          <div class="card"><h3>Use of AI tools</h3><p>AI tools may help with language, editing and coding, but the research question, analysis and conclusions must be the student's own. Say in your abstract or presentation which AI tools you used and for what. AI tools cannot be listed as authors, and results or references invented by AI lead to rejection. Students are responsible for the accuracy of everything they submit.</p></div>
+          <div class="card"><h3>Refunds</h3><p>The registration fee is non-refundable, including when an abstract is not accepted or a student withdraws.</p></div>
+          <div class="card"><h3>Privacy</h3><p><span class="tba">Privacy notice to be added</span></p></div>
+        </div>
+        <p><span class="tba">Draft policies</span> Review these before the site goes public.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="questions">
+    <div class="wrap">
+      <span class="label">09 Questions</span>
+      <div class="content">
+        <h2>Common questions</h2>
+        <div>
+          <details><summary>Who can take part?</summary><p>Middle school and high school students from any country. The two divisions are judged separately.</p></details>
+          <details><summary>Do I need finished results to submit?</summary><p>No. Work in progress is welcome as long as you have a clear question, a method, and at least preliminary findings to discuss.</p></details>
+          <details><summary>Can I enter as a team?</summary><p>Yes. A team of up to 4 students submits one abstract, presents together, and is judged as one project.</p></details>
+          <details><summary>What language are abstracts and presentations in?</summary><p>English.</p></details>
+          <details><summary>Does my project need a mentor?</summary><p>No. Independent projects are judged on the same criteria as mentored ones. Having a mentor is recommended, and if you have one, please enter their name when you submit.</p></details>
+          <details><summary>How much does it cost?</summary><p>The registration fee is $55 USD per abstract, paid when you submit. After that, there are no additional costs.</p></details>
+          <details><summary>Does each team member pay?</summary><p>No. The $55 fee is per abstract, so one payment covers the whole team.</p></details>
+          <details><summary>Can I get a refund?</summary><p>No. The fee is non-refundable, including when an abstract is not accepted.</p></details>
+          <details><summary>Is there a fee waiver?</summary><p>Yes, for students from low-income and lower-middle-income countries. <span class="tba">Eligible country list and how to apply to be added</span></p></details>
+          <details><summary>When is the deadline?</summary><p>Abstracts and the fee are due by December 15, 2026.</p></details>
+          <details><summary>How long can my abstract be?</summary><p>Up to 250 words.</p></details>
+          <details><summary>Can I use AI tools such as chatbots?</summary><p>You may use them for help with language, editing and coding, and you must say which tools you used and how. The ideas, analysis and conclusions must be your own.</p></details>
+          <details><summary>How will I know if my abstract is accepted?</summary><p>The review committee emails a decision to the address you submit with. <span class="tba">Notification date to be announced</span></p></details>
+          <details><summary>Will I receive a certificate?</summary><p>Yes. Every presenter receives a certificate of participation, and award winners receive an award certificate.</p></details>
+          <details><summary>Can I submit more than one abstract?</summary><p><span class="tba">To be confirmed</span></p></details>
+          <details><summary>Can I submit work I have presented at a science fair or another conference?</summary><p><span class="tba">To be confirmed</span></p></details>
+          <details><summary>Is the conference in person or online, and what about time zones?</summary><p><span class="tba">To be announced</span></p></details>
+          <details><summary>Will my abstract be published?</summary><p><span class="tba">To be confirmed</span></p></details>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>Eigen Sciences Research Conference</span>
+    <span>An international research conference for middle and high school students</span>
+  </div>
+</footer>
+
+<script>
+// Each menu item opens its own page: only the chosen section is shown.
+(function () {
+  var sections = Array.prototype.slice.call(document.querySelectorAll('section.block'));
+  var hero = document.getElementById('hero'), facts = document.getElementById('facts');
+  var links = Array.prototype.slice.call(document.querySelectorAll('header nav a'));
+  function show() {
+    var id = (location.hash || '').replace('#', '');
+    var known = sections.some(function (s) { return s.id === id; });
+    if (!known || id === 'about') id = 'about';
+    var home = id === 'about';
+    hero.classList.toggle('is-hidden', !home);
+    facts.classList.toggle('is-hidden', !home);
+    sections.forEach(function (s) { s.classList.toggle('is-hidden', s.id !== id); });
+    links.forEach(function (a) {
+      if (a.getAttribute('href') === '#' + id) a.setAttribute('aria-current', 'page');
+      else a.removeAttribute('aria-current');
+    });
+    window.scrollTo(0, 0);
+  }
+  window.addEventListener('hashchange', show);
+  show();
+})();
+
+(function () {
+  var c = document.getElementById('lattice');
+  if (!c || !c.getContext) return;
+  var ctx = c.getContext('2d');
+  var still = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function tok(n) { return getComputedStyle(c).getPropertyValue(n).trim(); }
+
+  function draw(t) {
+    var W = c.width, H = c.height, cx = W / 2, cy = H / 2, u = 44;
+    // Symmetric matrix [[a, b], [b, a]] has eigenvectors along (1,1) and (1,-1).
+    var k = 0.5 + 0.5 * Math.sin(t);
+    var a = 1 + 0.25 * k, b = 0.45 * k;
+    var rule = tok('--rule'), ink = tok('--muted'), accent = tok('--accent'), second = tok('--ink');
+    function P(x, y) { return [cx + (a * x + b * y) * u, cy - (b * x + a * y) * u]; }
+
+    ctx.clearRect(0, 0, W, H);
+    ctx.lineWidth = 1.5; ctx.strokeStyle = rule;
+    for (var i = -6; i <= 6; i++) {
+      var p = P(i, -6), q = P(i, 6), r = P(-6, i), s = P(6, i);
+      ctx.beginPath(); ctx.moveTo(p[0], p[1]); ctx.lineTo(q[0], q[1]);
+      ctx.moveTo(r[0], r[1]); ctx.lineTo(s[0], s[1]); ctx.stroke();
+    }
+    ctx.fillStyle = ink;
+    for (var x = -6; x <= 6; x++) for (var y = -6; y <= 6; y++) {
+      var d = P(x, y);
+      ctx.beginPath(); ctx.arc(d[0], d[1], 2.6, 0, 6.2832); ctx.fill();
+    }
+    function axis(dx, dy, col) {
+      var p = P(-6 * dx, -6 * dy), q = P(6 * dx, 6 * dy);
+      ctx.strokeStyle = col; ctx.lineWidth = 5; ctx.lineCap = 'round';
+      ctx.beginPath(); ctx.moveTo(p[0], p[1]); ctx.lineTo(q[0], q[1]); ctx.stroke();
+    }
+    axis(0.6, 0.6, accent);
+    axis(0.6, -0.6, second);
+  }
+
+  var start = null;
+  function frame(ts) {
+    if (start === null) start = ts;
+    draw(1.2 + (ts - start) / 2600);
+    requestAnimationFrame(frame);
+  }
+  draw(1.2);
+  if (!still) requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>
